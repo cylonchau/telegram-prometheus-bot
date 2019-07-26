@@ -120,8 +120,15 @@ func SendMessage(response []ResponseMessage, url string, chat string) {
 
 func (this *Telegram) ParuseUri(req ResponseMessage) (UriText string) {
 
-	UriText = fmt.Sprintf("告警类型: %s\n事件类型: %s\n告警主机: %s\n主机角色: %s\n告警摘要: %s\n告警描述: %s\n故障开始时间: %s\nEndsAt: %s\n", req.Status, req.Alertname, req.Host, req.Role, req.Summary, req.Description, req.StartsAt, req.EndsAt)
+	switch req.Status {
+	case "firing":
+		UriText = fmt.Sprintf("告警类型: %s\n事件类型: %s\n告警主机: %s\n主机角色: %s\n告警摘要: %s\n告警描述: %s\n故障开始时间: %s\n", req.Status, req.Alertname, req.Host, req.Role, req.Summary, req.Description, req.StartsAt)
+	case "resolved":
+		UriText = fmt.Sprintf("故障恢复\n\n告警类型: %s\n事件类型: %s\n告警主机: %s\n主机角色: %s\n告警摘要: %s\n告警描述: %s\n故障恢复时间: %s\n", req.Status, req.Alertname, req.Host, req.Role, req.Summary, req.Description, req.EndsAt)
 
+	}
+
+	//UriText = fmt.Sprintf("告警类型: %s\n事件类型: %s\n告警主机: %s\n主机角色: %s\n告警摘要: %s\n告警描述: %s\n故障开始时间: %s\nEndsAt: %s\n", req.Status, req.Alertname, req.Host, req.Role, req.Summary, req.Description, req.StartsAt, req.EndsAt)
 	return
 }
 
